@@ -43,20 +43,22 @@ export default function Post() {
                         className="rounded-xl" /> 
                     )} */}
                     {isAuthor && (
-                        <div className="absolute right-6 top-6">
+                        <div className="w-full flex justify-end gap-3 mb-6">
                             <Link to={`/edit-post/${post.$id}`}>
-                                <Button bgColor="bg-green-500" className="mr-3">
+                                <Button bgColor="bg-green-500" className="cursor-pointer px-4 py-2 rounded-md text-white font-semibold hover:bg-green-600 transition-colors"
+                                >
                                     Edit
                                 </Button>
                             </Link>
-                            <Button bgColor="bg-red-500" onClick={deletePost}>
+                            <Button bgColor="bg-red-500" onClick={deletePost} className="cursor-pointer px-4 py-2 rounded-md text-white font-semibold hover:bg-red-600 transition-colors"
+                            >
                                 Delete
                             </Button>
                         </div>
                     )}
                 </div>
                 <div className="w-full mb-6">
-                    <h1 className="text-2xl font-bold">{post.title}</h1>
+                    <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold">{post.title}</h1>
                 </div>
                 <div className="browser-css">
                     {parse(post.content)}

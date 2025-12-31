@@ -7,14 +7,18 @@ function LogoutBtn() {
 
   const dispatch = useDispatch()
 
-  const logoutHandler = () => {
-    authService.logout().then(() => {
-      dispatch(logout())
-    })
+  const logoutHandler = async () => {
+    try { 
+      await authService.logout(); 
+      dispatch(logout()); 
+    } catch (error) { 
+      console.error("Logout failed:", error); 
+    }
   }
 
   return (
-    <button onClick={logoutHandler} className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full'>log out</button>
+    <button onClick={logoutHandler} className='inline-block px-6 py-2 text-[15px] font-bold cursor-pointer text-white bg-[#d4a373] rounded-sm hover:bg-[#faedcd] hover:text-black transition-colors duration-200'
+    >Log out</button>
   )
 }
 

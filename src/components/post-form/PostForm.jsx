@@ -23,7 +23,7 @@ function PostForm({post}) {
         if (post) {
             const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null
             if (file) {
-                appwriteService.deleteFile(post.featuredImage)
+                await appwriteService.deleteFile(post.featuredImage)
             }
 
             const dbPost = await appwriteService.updatePost
@@ -36,20 +36,12 @@ function PostForm({post}) {
                 navigate(`/post/${dbPost.$id}`)
             }
         } else {
-            const file = await appwriteService.uploadFile
-            (data.image[0]);
-
-            if (file) {
-                const fileId = file.$id
-                data.featuredImage = fileId
-                const dbPost = await appwriteService.createPost({
-                    ...data,
-                    userId: userData.$id,
-                })
-
-                if (dbPost) {
-                    navigate(`/post/${dbPost.$id}`)
-                }
+            const dbPost = await appwriteService.createPost({
+                 ...data, 
+                 userId: userData.$id, 
+            }); 
+            if (dbPost) { 
+                navigate(`/post/${dbPost.$id}`); 
             }
         }
     }
@@ -78,8 +70,8 @@ function PostForm({post}) {
     }, [watch, slugTransform, setValue])
 
   return (
-    <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
-            <div className="w-2/3 px-2">
+    <form onSubmit={handleSubmit(submit)} className="flex flex-wrap -mx-2">
+            <div className="w-full lg:w-2/3 px-2">
                 <Input
                     label="Title :"
                     placeholder="Title"
@@ -97,15 +89,15 @@ function PostForm({post}) {
                 />
                 <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
             </div>
-            <div className="w-1/3 px-2">
+            <div className="w-full lg:w-1/3 px-2">
                 <Input
                     label="Featured Image :"
                     type="file"
-                    className="mb-4"
+                    className="mb-4 cursor-pointer"
                     accept="image/png, image/jpg, image/jpeg, image/gif"
-                    {...register("image", { required: !post })}
+                    {...register("image")}
                 />
-                {post && (
+                {post?.featuredImage && (
                     <div className="w-full mb-4">
                         <img
                             src={appwriteService.getFilePreview(post.featuredImage)}
@@ -117,10 +109,12 @@ function PostForm({post}) {
                 <Select
                     options={["active", "inactive"]}
                     label="Status :"
-                    className="mb-4"
+                    className="mb-4 cursor-pointer"
                     {...register("status", { required: true })}
                 />
-                <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className="w-full">
+                <Button type="submit" bgColor={post ? "bg-green-500" : undefined} 
+                className="w-full cursor-pointer mt-5 bg-[#d4a373] text-[#fefae0] font-semibold py-3 rounded-lg shadow-md hover:bg-[#dda15e] transition-colors duration-200"
+                >
                     {post ? "Update" : "Submit"}
                 </Button>
             </div>

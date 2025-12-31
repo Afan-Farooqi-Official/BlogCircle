@@ -17,18 +17,15 @@ export class Service{
     // post service
     async createPost({title, slug, content, featuredImage, status, userId}){
         try {
-            return await this.databases.createDocument({
-                databaseId: conf.appwriteDatabaseId,
-                collectionId: conf.appwriteCollectionId,
-                documentId: slug,
-                data: {
-                    title,
-                    content,
-                    featuredImage,
-                    status,
-                    userId,
-                }
-            })
+            const data = { title, content, status, userId, }; 
+            // only add featuredImage if provided if (featuredImage) 
+            { data.featuredImage = featuredImage; } 
+            return await this.databases.createDocument({ 
+                databaseId: conf.appwriteDatabaseId, 
+                collectionId: conf.appwriteCollectionId, 
+                documentId: slug, 
+                data, 
+            });
         } catch (error) {
             console.log('Appwrite service : createPost : error', error)
         }
@@ -45,7 +42,6 @@ export class Service{
                     content,
                     featuredImage,
                     status,
-                    userId,
                 }
             })
         } catch (error) {

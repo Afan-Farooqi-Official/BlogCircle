@@ -17,29 +17,29 @@ function Signup() {
     const create = async (data) => {
         setError('')
         try {
-            const userData = await authService.createAccount(data)
-            if (userData) {
-                const userData = await authService.getCurrentUser()
+            const account = await authService.createAccount(data)
+            if (account) {
+                const currentUser = await authService.getCurrentUser()
 
-                if (userData)
-                    dispatch(login(userData))
+                if (currentUser)
+                    dispatch(login(currentUser))
                 navigate('/')
             }
         } catch (error) {
-            setError(error.message)
+            setError(error?.message || "Signup failed. Please try again.")
         }
     }
 
   return (
-    <div className="flex items-center justify-center">
-        <div className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
+    <div className="relative z-10 flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-md sm:max-w-lg lg:max-w-xl bg-[#faedcd] rounded-xl p-6 sm:p-10 border border-black/10 shadow-lg">
             <div className="mb-2 flex justify-center">
-                <span className="inline-block w-full max-w-[100px]">
+                <span className="inline-block w-full max-w-25">
                     <Logo width="100%" />
                 </span>
             </div>
-                <h2 className="text-center text-2xl font-bold leading-tight">Sign up to create account</h2>
-                <p className="mt-2 text-center text-base text-black/60">
+                <h2 className="text-center text-xl sm:text-2xl lg:text-3xl font-bold leading-tight">Sign up to create account</h2>
+                <p className="mt-2 text-center text-sm sm:text-base text-black/60">
                     Already have an account?&nbsp;
                     <Link
                         to="/login"
@@ -50,7 +50,7 @@ function Signup() {
                 </p>
                 {error && <p className='text-red-600 mt-8 text-center'>{error}</p>}
                 <form onSubmit={handleSubmit(create)}>
-                    <div className='space-y-5'>
+                    <div className='space-y-4 sm:space-y-5'>
                         <Input 
                         label='Name: '
                         placeholder="Enter your name"
@@ -66,7 +66,7 @@ function Signup() {
                         {...register('email', {
                             required: true,
                             validate: {
-                                matchPatern: (value) => /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/.test(value) ||
+                                pattern : (value) => /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/.test(value) ||
                                 'Email address must be a valid address',
                             }
                         })}
@@ -81,7 +81,7 @@ function Signup() {
                         />
                         <Button
                         type='submit'
-                        className='w-full'
+                        className='w-full cursor-pointer mt-5 bg-[#d4a373] text-[#fefae0] font-semibold py-2 sm:py-3 rounded-lg shadow-md hover:bg-[#dda15e] transition-colors duration-200'
                         >Create Account</Button>
                     </div>
                 </form>
