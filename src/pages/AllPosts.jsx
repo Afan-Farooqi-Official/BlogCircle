@@ -20,15 +20,15 @@ function AllPosts() {
   return (
     <div className='w-full py-8'>
         <Container>
-            <div className='flex flex-wrap'>
+            <div className='columns-1 sm:columns-2 lg:columns-4 gap-4'>
                 {loading
                   ? Array(8).fill().map((_, i) => (
-                      <div key={i} className='p-2 w-full sm:w-1/2 lg:w-1/4'>
+                      <div key={i} className='mb-4 break-inside-avoid'>
                         <PostCard />
                       </div>
                     ))
                   : posts.map((post) => (
-                      <div key={post.$id} className='p-2 w-full sm:w-1/2 lg:w-1/4'>
+                      <div key={post.$id} className='mb-4 break-inside-avoid'>
                         <PostCard post={post} />
                       </div>
                     ))
